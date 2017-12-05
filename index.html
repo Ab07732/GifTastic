@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Animals</title>
+  <style type="text/css">
+    button,
+    div,
+    form,
+    input {
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Animal Search</h1>
+    
+    <div id="buttons-view"></div>
+    <form id="animal-form">
+      <label for="animal-input">Add an Animal Bro</label>
+      <input type="text" id="animal-input"><br>
+      
+      <input id="add-animal" type="submit" value="Add a Animal Bro">
+    </form>
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      
+      var animals = ["Lions", "Tigers", "Bears", "Monkeys", "Cats", "Dogs"];
+
+      function displayAnimalInfo() {
+        var animal = $(this).attr("data-name");
+        var queryURL = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cats"
+        queryURL.done(function(data) { console.log("success got data", data); });
+  
+          $.ajax({     
+          url: queryURL,
+          method: "GET"
+        }).done(function(response) {
+
+
+          var animal = $("<div class='giphy'>");
+
+          
+          var rating = response.Rating;
+
+          
+          var pOne = $("<p>").text("Rating: " + rating);
+
+          
+          gifDiv.append(pOne);
+
+
+          $("#gif-view").prepend(gifDiv);
+          
+        });
+      }
+
+      function renderButtons() {
+        
+        $("#buttons-view").empty();
+        
+        for (var i = 0; i < animals.length; i++) {
+          
+          var a = $("<button>");
+         
+          a.addClass("animal");
+          
+          a.attr("data-name", animals[i]);
+          
+          a.text(animals[i]);
+         
+          $("#buttons-view").append(a);
+        }
+      }
+     
+      $("#add-animal").on("click", function(event) {
+        event.preventDefault();
+        
+        var animal = $("#animal-input").val().trim();
+        
+        animal.push(animals);
+        
+        renderButtons();
+      });
+     
+      $(document).on("click", ".animal", displayAnimalInfo);
+      
+      renderButtons();
+    </script>
+  </div>
+</body>
+</html>
